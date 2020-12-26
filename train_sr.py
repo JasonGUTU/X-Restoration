@@ -15,38 +15,49 @@ import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
 from pytorch_lightning import Trainer
 
-from models import load_sr_model
-from networks import load_network
-from dataset import load_srdata
+from models import load_model
+from networks import load_sr_network
+# from srdata import load_srdata
+
+
+def main(args):
+    # ================================ Initilizing
+    # init network and model
+    net = SR_Nets.from_namespace(args)
+    model = SR_Model.from_namespace(args)
+    model.set_network(net)
+
+    # init dataloader
+    train_dataloader =
+    test_dataloader =
+
+    # init logger
+    logger =
+
+    # init trainer
+    trainer = pl.Trainer()
+    # ================================ Train
 
 
 if __name__ == "__main__":
-    #================================ ArgParsing
     # fix the seed for reporducing
-    pl.seed_everything(1234)
+    pl.seed_everything(1)
+    #================================ ArgParsing
     # init Argment Parser
     parser = ArgumentParser()
     # add all the available trainer options to argparse, Check trainer's paras for help
     parser = pl.Trainer.add_argparse_args(parser)
     # figure out which model to use
-    parser.add_argument('--model_type', type=str, default='gan', help='gan or mnist')
-    parser.add_argument('--network_name', type=str, default='SRCNN', help='gan or mnist')
+    parser.add_argument('--model_type', type=str, default='sr', help='Perceptual [percept] or PSNR [sr] oriented SR')
+    parser.add_argument('--network_name', type=str, default='FSRCNN', help='Name of your output')
     temp_args, _ = parser.parse_known_args()
     # add model specific args
-    SR_Model = load_sr_model(temp_args.model_type)
-    SR_Nets = load_sr_model(temp_args.network_name)
-
-
+    SR_Model = load_model(temp_args.model_type)
+    SR_Nets = load_sr_network(temp_args.network_name)
+    parser = SR_Model.add_model_specific_args(parser)
+    parser = SR_Nets.add_model_specific_args(parser)
+    # add training data specific args
     
     args = parser.parse_args()
+    main(args)
 
-
-
-
-
-
-
-    #================================ Initilizing
-
-
-    #================================ Train
