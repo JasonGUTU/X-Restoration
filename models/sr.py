@@ -62,7 +62,7 @@ class SuperResolution(pl.LightningModule):
         parser.add_argument('--adam_beta2', type=float, default=0.999)
         # ================= Optimizer, Learning rate scheduler
         parser.add_argument('--scheduler', type=str, default='step', help='Learning rate scheduler, [`no`, `step`, `exp`, `linear`, `cos`]')
-        parser.add_argument('--scheduler_step_epoch', type=int, default=2000)
+        parser.add_argument('--scheduler_step_epoch', type=int, default=3000)
         parser.add_argument('--scheduler_step_gamma', type=float, default=0.5)
         parser.add_argument('--scheduler_cos_T_max', type=int, default=20)
         parser.add_argument('--scheduler_cos_eta_min', type=float, default=0.000001)
@@ -178,7 +178,7 @@ class SuperResolution(pl.LightningModule):
 
     def training_step(self, batch, batch_idx):
         hr, lr = batch
-        # hr, lr = self._augmentation(hr, lr)
+        hr, lr = self._augmentation(hr, lr)
         sr = self.network(lr)
 
         loss = self.loss(sr, hr)

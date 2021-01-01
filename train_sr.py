@@ -9,7 +9,6 @@ from torchvision import transforms
 
 import pytorch_lightning as pl
 from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning import Trainer
 
 from models import load_model
 from models import SRLoggingCallback
@@ -45,16 +44,10 @@ def main(args):
     )
 
     # init trainer
-    trainer = pl.Trainer.from_argparse_args(args,
-                                            gpus=1,
-                                            logger=logger,
-                                            callbacks=[model_checkpoint_callback, SRLoggingCallback()])
-
+    trainer = pl.Trainer.from_argparse_args(args, gpus=args.gpu_useage, logger=logger, callbacks=[model_checkpoint_callback, SRLoggingCallback()])
 
     # ================================ Train
-    trainer.fit(model,
-                train_dataloader=train_dataloader,
-                val_dataloaders=test_dataloader)
+    trainer.fit(model, train_dataloader=train_dataloader, val_dataloaders=test_dataloader)
 
     # ================================ Save Final Model
     trainer.save_checkpoint(f'{args.default_root_dir}/{args.exp_name}-final.ckpt')
@@ -73,6 +66,7 @@ if __name__ == "__main__":
     parser.add_argument('--model_type', type=str, default='sr', help='Perceptual [percept] or PSNR [sr] oriented SR')
     parser.add_argument('--network_name', type=str, default='FSRCNN', help='Name of your output')
     parser.add_argument('--logger_dir', type=str, default='./EXPs/tb_logs', help='logging path')
+    parser.add_argument('--gpu_useage', type=int, default=1, help='Over write --gpus, it does not work now')
 
     temp_args, _ = parser.parse_known_args()
 
@@ -85,6 +79,7 @@ if __name__ == "__main__":
     parser = SRDataLoader.add_data_specific_args(parser)
     
     args = parser.parse_args()
+
     sr_Trainer_Default(args)
 
     main(args)

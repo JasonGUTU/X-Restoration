@@ -60,13 +60,13 @@ class Bunch(object):  #
 
 SR_TRAINER_DEFAULTS = OrderedDict({
     'default_root_dir': './EXPs/FSRCNN',
-    'gpus': 1,  # This is gpu usage
+    'gpus': '1',  # This is gpu usage
     'log_gpu_memory': None,
     'progress_bar_refresh_rate': 0,
     'overfit_batches': 0.0,
     'track_grad_norm': -1,
-    'check_val_every_n_epoch': 25,  # check validation per this epochs
-    'max_epochs': 13000,  # with 32 batch_size, DIV2K has 113 iters ber epoch
+    'check_val_every_n_epoch': 20,  # check validation per this epochs
+    'max_epochs': 9000,  # with 32 batch_size, DIV2K has 113 iters ber epoch
     'min_epochs': 1,
     'weights_summary': 'top',
     'weights_save_path': './EXPs/FSRCNN',
