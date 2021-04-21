@@ -128,7 +128,7 @@ class SuperResolution(pl.LightningModule):
     def pre_processing(self, x):
         if x.dim == 3:
             x.unsqueeze(0)
-        x = (x - x.min()) / x.max()
+#         x = (x - x.min()) / x.max()
         return x
 
     def post_processing(self, x):
