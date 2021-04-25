@@ -4,13 +4,17 @@ import torch
 import torchvision.transforms.functional
 
 
-def aug_filp(hr_batch, lr_batch, v_flip=0.5, h_flip=0.5):
+def aug_filp(hr_batch, lr_batch, v_flip=0.5, h_flip=0.5, rot90=0.5):
     if np.random.binomial(1, v_flip):
         hr_batch.flip(3)
         lr_batch.flip(3)
     if np.random.binomial(1, h_flip):
         hr_batch.flip(2)
         lr_batch.flip(2)
+    if np.random.binomial(1, rot90):
+        hr_batch = hr_batch.transpose(3, 2)
+        lr_batch = lr_batch.transpose(3, 2)
+        
     return hr_batch, lr_batch
 
 
